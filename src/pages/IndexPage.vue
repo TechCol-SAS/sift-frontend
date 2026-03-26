@@ -1,9 +1,11 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="text-center">
-    <h1>Index Page</h1>
-  </div>
+  <q-page padding>
+    <div>
+      <q-btn label="Test" color="primary" />
+    </div>
+  </q-page>
 </template>
 
 <style scoped lang="scss"></style>
