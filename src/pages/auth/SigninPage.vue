@@ -55,7 +55,7 @@ const test = ref<string>('');
 
         <div>
           <RouterLink
-            :to="{ name: 'register' }"
+            :to="{ name: 'signup' }"
             class="row justify-end cursor-pointer"
             style="color: var(--q-primary); text-decoration: none"
             >¿Olvidaste tu contraseña?</RouterLink
@@ -77,7 +77,7 @@ const test = ref<string>('');
           ¿No tienes una cuenta?
           <RouterLink
             style="color: var(--q-primary); text-decoration: none"
-            :to="{ name: 'register' }"
+            :to="{ name: 'signup' }"
             >Regístrate aquí</RouterLink
           >
         </p>
