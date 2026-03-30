@@ -1,11 +1,7 @@
 <script setup lang="ts">
-interface Props {
-  icon: string;
-  title: string;
-  description: string;
-}
+import type { IProps } from 'src/models/interfaces/props';
 
-defineProps<Props>();
+defineProps<IProps>();
 </script>
 
 <template>
