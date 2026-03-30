@@ -33,7 +33,6 @@ const metaData = computed<IMetaData>(() => {
             <q-btn
               v-if="metaData.showBackButton"
               flat
-              dense
               icon="arrow_back"
               color="grey-6"
               label="Volver al Dashboard"
@@ -98,9 +97,14 @@ const metaData = computed<IMetaData>(() => {
 }
 
 .content-wrapper {
-  max-width: 1800px;
-  margin: 0 auto;
   flex: 1;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
+  @media (min-width: 1024px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
 
 .back-button {
@@ -113,8 +117,6 @@ const metaData = computed<IMetaData>(() => {
 }
 
 .footer-container {
-  max-width: 1600px;
-  margin: 0 auto;
   padding-top: 80px;
   padding-bottom: 32px;
 }

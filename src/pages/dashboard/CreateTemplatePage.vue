@@ -1,7 +1,15 @@
 <script setup lang="ts">
-import { useTemplateStore } from 'src/stores/template-store';
+import { useTemplate } from 'src/composables/dashboard/template.composable';
 
-const templateStore = useTemplateStore();
+const {
+  template,
+  columnTypes,
+  hasNamedColumns,
+  previewRows,
+  addColumn,
+  removeColumn,
+  previewColumns,
+} = useTemplate();
 </script>
 
 <template>
@@ -19,7 +27,7 @@ const templateStore = useTemplateStore();
               Nombre de la Plantilla
             </label>
             <q-input
-              v-model="templateStore.template.name"
+              v-model="template.name"
               placeholder="Ej: Reporte de Ventas"
               filled
               dense
@@ -32,19 +40,12 @@ const templateStore = useTemplateStore();
           <div class="q-mb-lg">
             <div class="row items-center justify-between q-mb-md">
               <label class="text-body2 text-weight-medium text-white">Columnas</label>
-              <q-btn
-                icon="add"
-                color="primary"
-                flat
-                round
-                dense
-                @click="templateStore.addColumn()"
-              />
+              <q-btn icon="add" color="primary" flat round dense @click="addColumn()" />
             </div>
 
             <div class="columns-list custom-scrollbar">
               <div
-                v-for="column in templateStore.template.columns"
+                v-for="column in template.columns"
                 :key="column.id"
                 class="glass-item-hover q-mb-sm q-pa-sm"
               >
@@ -67,7 +68,7 @@ const templateStore = useTemplateStore();
 
                   <q-select
                     v-model="column.type"
-                    :options="templateStore.columnTypes"
+                    :options="columnTypes"
                     option-label="label"
                     option-value="value"
                     emit-value
@@ -99,7 +100,7 @@ const templateStore = useTemplateStore();
                     icon="delete"
                     color="red"
                     size="sm"
-                    @click="templateStore.removeColumn(column.id)"
+                    @click="removeColumn(column.id)"
                   />
                 </div>
               </div>
@@ -122,11 +123,45 @@ const templateStore = useTemplateStore();
     </div>
 
     <div class="col-12 col-md-6">
-      <!-- Right Card: Preview -->
       <q-card class="glass-card full-height" flat bordered>
         <q-card-section class="q-pa-lg">
-          <h3 class="text-white">Card Derecho</h3>
-          <p class="text-grey-6">Este es el contenido del card derecho</p>
+          <h3 class="text-h6 text-weight-bold text-white q-mb-xs">Previsualización</h3>
+          <p class="text-body2 text-grey-6 q-mb-lg">Así se verá tu plantilla en Excel</p>
+
+          <div
+            v-if="!hasNamedColumns"
+            class="flex column items-center justify-center q-pa-xl text-center"
+          >
+            <q-icon name="table_chart" size="48px" color="grey-7" />
+            <p class="text-grey-6 q-mt-md q-mb-none">
+              Agrega columnas para ver la previsualización
+            </p>
+          </div>
+
+          <div v-else class="preview-table-wrapper custom-scrollbar">
+            <q-table
+              :rows="previewRows"
+              :columns="previewColumns()"
+              flat
+              bordered
+              hide-bottom
+              :rows-per-page-options="[0]"
+              class="preview-table"
+            >
+              <template #header-cell="props">
+                <q-th :props="props" class="preview-header">
+                  <div class="column-header">
+                    <span class="column-name">{{ props.col.label }}</span>
+                    <span class="column-type">({{ props.col.type }})</span>
+                  </div>
+                </q-th>
+              </template>
+
+              <template #body-cell="props">
+                <q-td :props="props" class="preview-cell">&nbsp;</q-td>
+              </template>
+            </q-table>
+          </div>
         </q-card-section>
       </q-card>
     </div>
@@ -142,5 +177,51 @@ const templateStore = useTemplateStore();
 
 .full-height {
   min-height: 400px;
+}
+
+.preview-table-wrapper {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.preview-table {
+  background: transparent;
+
+  :deep(.q-table) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  :deep(thead tr) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  :deep(th),
+  :deep(td) {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.preview-header {
+  .column-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .column-name {
+    color: white;
+    font-weight: 600;
+  }
+
+  .column-type {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+}
+
+.preview-cell {
+  height: 40px;
+  background: rgba(255, 255, 255, 0.02);
 }
 </style>
