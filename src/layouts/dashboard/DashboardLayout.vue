@@ -1,12 +1,27 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useQuasar } from 'quasar';
+import { useRoute, useRouter } from 'vue-router';
 
 import { useThemeStore } from 'src/stores/theme-store';
 
+import type { IMetaData } from 'src/models/interfaces/metadata.interface';
+
 const $q = useQuasar();
+const route = useRoute();
+const router = useRouter();
 const themeStore = useThemeStore();
 
 $q.dark.set(themeStore.darkMode);
+
+const metaData = computed<IMetaData>(() => {
+  return {
+    headline: route.meta.headline as string,
+    title: route.meta.title as string,
+    description: route.meta.description as string,
+    showBackButton: route.meta.showBackButton as boolean,
+  };
+});
 </script>
 
 <template>
@@ -15,16 +30,26 @@ $q.dark.set(themeStore.darkMode);
       <q-page class="q-pa-md q-pa-md-xl page-content">
         <div class="content-wrapper">
           <div class="q-mt-xl q-pt-lg q-mb-xl q-pb-lg">
+            <q-btn
+              v-if="metaData.showBackButton"
+              flat
+              dense
+              icon="arrow_back"
+              color="grey-6"
+              label="Volver al Dashboard"
+              @click="router.push({ name: 'dashboard' })"
+              class="q-mb-md back-button"
+              no-caps
+            />
+
             <p class="text-primary text-overline text-h6 q-mb-none panel-control">
-              PANEL DE CONTROL
+              {{ metaData.headline }}
             </p>
             <h2 class="text-white text-weight-bold text-h3 q-mb-sm q-mt-none">
-              Gestión de formatos
+              {{ metaData.title }}
             </h2>
             <p class="text-grey-6 text-body1 q-mb-md" style="max-width: 700px">
-              Crea, visualiza y genera documentos de manera eficiente con nuestras
-              <br class="gt-sm" />
-              herramientas integradas.
+              {{ metaData.description }}
             </p>
           </div>
 
@@ -73,9 +98,18 @@ $q.dark.set(themeStore.darkMode);
 }
 
 .content-wrapper {
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
   flex: 1;
+}
+
+.back-button {
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--q-primary) !important;
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 
 .footer-container {
