@@ -31,6 +31,25 @@ const routes: RouteRecordRaw[] = [
         path: '',
         name: 'dashboard',
         component: () => import('pages/dashboard/DashboardPage.vue'),
+        meta: {
+          headline: 'Panel de Control',
+          title: 'Gestión de formatos',
+          description:
+            'Crea, visualiza y genera documentos de manera eficiente con nuestras herramientas integradas.',
+          showBackButton: false,
+        },
+      },
+      {
+        path: 'create-template',
+        name: 'create-template',
+        component: () => import('pages/dashboard/CreateTemplatePage.vue'),
+        meta: {
+          headline: 'Plantillas',
+          title: 'Crear Plantillas',
+          description:
+            'Diseña la estructura de tus formatos definiendo las columnas y sus tipos de datos.',
+          showBackButton: true,
+        },
       },
     ],
   },

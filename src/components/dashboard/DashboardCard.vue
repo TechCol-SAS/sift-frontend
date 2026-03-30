@@ -1,18 +1,14 @@
 <script setup lang="ts">
-interface Props {
-  icon: string;
-  title: string;
-  description: string;
-}
+import type { IProps } from 'src/models/interfaces/props.interface';
 
-defineProps<Props>();
+defineProps<IProps>();
 </script>
 
 <template>
-  <q-card class="dashboard-card" flat bordered>
+  <q-card class="dashboard-card glass-card-hover" flat bordered>
     <q-card-section class="q-pt-lg q-pt-md-xl q-pb-md q-pb-md-lg q-px-md q-px-md-lg">
       <div class="card-content-wrapper">
-        <div class="icon-background q-pa-xs q-mb-sm" style="width: fit-content; border-radius: 6px">
+        <div class="icon-background glass-item q-pa-xs q-mb-sm">
           <q-icon :name="icon" size="24px" color="primary" />
         </div>
 
@@ -24,7 +20,14 @@ defineProps<Props>();
           {{ description }}
         </p>
 
-        <q-btn unelevated no-caps class="access-btn" label="Acceder" icon-right="north_east" />
+        <q-btn
+          unelevated
+          no-caps
+          class="access-btn"
+          label="Acceder"
+          icon-right="north_east"
+          :to="to"
+        />
       </div>
     </q-card-section>
   </q-card>
@@ -32,16 +35,10 @@ defineProps<Props>();
 
 <style scoped lang="scss">
 .dashboard-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
   cursor: pointer;
   height: 100%;
 
   &:hover {
-    border-color: var(--q-primary);
-
     .card-title {
       color: var(--q-primary);
     }
@@ -62,11 +59,11 @@ defineProps<Props>();
 }
 
 .icon-background {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 .card-title {
